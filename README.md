@@ -89,19 +89,19 @@ This page helps in analysing the process. It contains various filters including 
 
 The following were noted:
 
-* Sequence-related issues:
+* <b>Sequence-related issues</b>:
  - Goods Issue to Credit Check Denied: There are 40 cases where the credit check was denied after the Goods Issue activity. This indicates a lack of control in the system as goods could be issued to customers who are not credit worthy.
  - Goods Issue to Delivery Block Set: There are 15 cases where the Goods Issue activity was followed by Delivery Block Set activity. This happened a total of 13 times.
  - Delivery Block Set to Create Delivery: There are 134 cases where despite the Delivery Block Set activity was immediately followed by Create Delivery.
  - Delivery Block Set to Goods Issue: This occures in 4 cases.
 
-* Repeated activities: There were several repeated activities. They include the following amongst others:
+* <b>Repeated activities</b>: There were several repeated activities. They include the following amongst others:
  - Create delivery
  - Goods issue
  - Change scheduled date
  - Pro forma invoice
 
-Connections: The connection column below shows the connections between events i.e., from the preceeding activity to the next activity. From this, there are 349 possible connections.
+* <b>Connections</b>: The connection column below shows the connections between events i.e., from the preceeding activity to the next activity. From this, there are 349 possible connections.
 
 ### Unwanted activities
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Unwanted%20activities.jpg?raw=true)
@@ -113,7 +113,9 @@ Unwanted activities: Looking at the variants above, we can see that there are ab
  - Goods Issue
  - Pro forma invoice
  - Create Quotation
+
 The remaining activities are considered Unwanted activities.
+
 From the above, there are 22 unwanted activities which occured 64,509 times in 23,177 orders. 35% of cases includes unwanted activities. The unwanted activities by business area shows that unwanted activities occurs more in Business Area 7000. Of the unwanted activities, the top three includes <i>Change Scheduled date</i> occurs the most (47.66%), followed by <i>Remove Reason for Rejection</i> (17.72%) and <i>Credit Check Release</i>. In addition to this, the median duration of cases with these unwanted activities is 9 days, compared to 5 days with cases without these activities. This indicates another area of Value improvement.
 
 
