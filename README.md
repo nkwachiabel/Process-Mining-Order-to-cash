@@ -66,7 +66,7 @@ The event log was reviewed to ensure the data contained were okay to use for pro
 
 # Output and Visualisations
 ## Data overview
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Data%20overview.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Data%20Overview.jpg?raw=true)
 
 This page gives an overview of the dataset. It shows the number of orders, activities and events. It also highlights the net value of these order requests and number of process variants. The clustered column chart at the top right shows the number of orders per year and month. We can see that there were many orders in January 2016 and these orders reduced a lot from July 2017. It is also important to mention here that the TLC Connectivity product started in January 2017.
 
@@ -75,7 +75,7 @@ The pie chart shows the number of orders by product hierarchy. TLC Optical Cable
 Regarding activities, the Activities by user types table shows the various activities and broken down into Human/Robot. The activity <b>Schedule Line Rejected</b> has no user type. This is because when an order is rejected, the User_Type column is empty. While the net value of the 21,159 orders are 241.83m, they contain 2,488 rejected orders amounting to $62.57m with more rejects coming from TLC Optical Cables and no reject in TLC Connectivity.
 
 ## Process discovery based on event log data
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Process%20details.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Process%20Discovery.jpg?raw=true)
 
 This page helps in analysing the process. It contains various filters including product hierarchy, order type and customer.
 The gain a proper understanding of the process, the order was broken down into the 4 distinct product hierarchy. In understanding the process, 3 different analysis was carried out; (i) variant analysis, (ii) process flow and (iii) transition matrix.
@@ -106,19 +106,27 @@ The gain a proper understanding of the process, the order was broken down into t
      * Goods were issued even when the Document blocked for credit activity was set. This occured in 3 different orders from 1 customer (Customer 206). For these 3 cases, the document was released for credit by User51 (Customer service rep) initially in May, but was later blocked for credit in December of the same year by User33 (Master Scheduler) and the Goods were still issued in December by User66 (Customer service rep). This indicates a lack of control in the system.
  3.  <b>Delivery:</b> There were 5 cases where Delivery activity was done even immediately after the Address missing block was set. A further look into these cases showed that the Address missing block was removed before the Good Issue activity was done. This can be because the Delivery activity was an automatic activity.
 
-### Other findings
+### Unwanted activities
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Unwanted%20activities.jpg?raw=true)
+
+
+
+### Changes
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Changes.jpg?raw=true)
+
+
 * <b>Rejected order</b>: The product with the highest number of rejected order is TLC Optical Ground Cables with 57% of the orders rejected. The reason for the rejections were not stated for root cause analysis, while TLC Connectivity has no rejected order. One notable thing about the rejected order is that none of the orders were rejected after delivery was made.
 
 * Some events are carried out by robots in the process. Asides Delivery and Good Issue, robot can create line, remove header block and set LgstCheckOnConfDat in TLC Optical Cables hierarchy
 
 * <b>Process benchmarking</b>
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Process%20benchmarking.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Process%20Benchmarking.jpg?raw=true)
 
 The process benchmarking page helps to compare different process variants using various filters; Order type, Product hierarchy, Delayed order or not. It also contains some metrics such as the median order fulfilment time, on-time order rate, etc. This shows the comparison between the most occuring variants in TLC Optical Cables and TLC Optical Fibres product. We can see that while the TLC optical median fulfilment time for Variant 1 is 60 days, it is 41 days for TLC Optical Fibres. The reason for this as we can see in the above is that despite the fact that the Header Block Removed activity in TLC Optical Cables product is done in less than a day, more time is spent in the LgstCheckOnConfDat Removed activity compared to TLC Optical Fibres product. 
 
 
 ## Timing analysis
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Timing%20analysis.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Timing%20analysis.jpg?raw=true)
 
 This analysis was done to analyse the bottlenecks in the process relating to timing. To know how long a process should last, we used the median duration of a case as the performance indicator. In the overall order, the median duration was 40 days. About 49.58% of cases did not meet this time target. When broken down into the various product hierarchy, the median duration were as follows.
 
@@ -133,29 +141,14 @@ From the median duration above, this indicates that there is room for improvemen
 
 For sched.line changed delivery date, this is not clear if the change is coming from the customer or the company. If coming from the company, this means that the company needs to improve its inventory planning to avoid this from happening.
 
-## Users analysis
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Users%20analysis.jpg?raw=true)
-
-Users were analysed to understand who does what activity in the process. This analysis was focused on the human users and was broken down into the different product hierarchies. The graph at the extreme left shows the users and their roles in the company. This shows that in all the products, there are so many people acting as Customer Service Representatives compared to other roles.
-* In TLC Connectivity, there are only two roles; Logistic operator(User12) and Customer service rep (6 users). The segregation of duties shows that the customer service rep can perform all activities while the Logistic operator only performs the Header Block Removed activity. The most active customer service rep is User 20.
-* In TLC Optical cables, there are more roles; Material planner (User75), IT HQ Logistic (User74), External fiber sales logistic (User38), D.C. Manager, Corporate credit manager (User57), Accessories manager, credit analyst (User58, User59), customer service manager (User13, User19,User28), logistic operator (User12, User29, User34, User70), customer service rep (21 users), data engineer manager, design engineer, intercompany planner (User21), local IT (User25, User36, User41), master scheduler (User31, User32, User33), production planner (User42), logistic manager (User35, User44), buyer (User49), Cut line team leader (User72) and product manager (User48). No user handles more than two roles. This shows appropriate segregation of duties and no one user has too much workload. There are 8 users where the role == empty. They handle the Delivery, CTR Block removed activities. This analysis shows that there is a user tagged Buyer and the only actvity this user does is to reschedule the delivery date. The customer service rep can do all activities.
-* TLC Optical fibres has 4 active roles; NA Fiber Sales and service manager (User16), External fiber sales logistic (User38), customer service representative (User43, User51, User9) and corporate credit manager (User57). Similar to the above, the customer service rep does all activities. The corporate credit manager releases document for credit, external fiber sales logistic handles the sched.line changed delivery date and LgstCheckOnConfDat removed activity. In this product, User9 does majority of the work.
-* Finally, TLC Optical ground cables has 8 active roles; master scheduler, logistic operator, external fiber sales logistic, data engineer manager, design engineer, customer service rep, customer service manager. As usual, customer service rep performs all activities, customer service manager does only Line creation, etc.
-* The Handover of work between users shows how tasks are handed over between the various roles. For example, in the above, the customer service manager works only with the customer service rep, while the customer service rep handsover work to everyother person except the external fiber sales logistic.
-
-
-## Customer details
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Customer%20details.jpg?raw=true)
-
-This page shows information relating to a particular customer by using the filter at the top left of the screen.
 
 ## Order details
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Order%20details.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Order%20details.jpg?raw=true)
 
 This page shows information relating to a particular case by using the filter at the top right of the screen.
 
 ## Open orders
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Open%20orders.jpg?raw=true)
+![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Open%20orders.jpg?raw=true)
 
 This page shows information relating to incomplete cases. These are cases which starts from Line creation but does not end in Good issue or is not rejected. From the eventlog, there are 8,908 uncompleted orders with total value of $1,150.69m. We can further split this uncompleted orders into two categories; Services and Products. 
 
