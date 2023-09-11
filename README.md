@@ -68,36 +68,41 @@ The event log was reviewed to ensure the data contained were okay to use for pro
 ## Data overview
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Data%20Overview.jpg?raw=true)
 
-This page gives an overview of the dataset. It shows the number of orders, activities and events. It also highlights the net value of these order requests and number of process variants. The clustered column chart at the top right shows the number of orders per year and month. We can see that there were many orders in January 2016 and these orders reduced a lot from July 2017. It is also important to mention here that the TLC Connectivity product started in January 2017.
-
-The pie chart shows the number of orders by product hierarchy. TLC Optical Cables was the most ordered, followed by TLC Optical Fibres. TLC Ground Cables and TLC Connectivity have not been ordered that much. While we have product hierarchy, these products are also broken down into order types. The US-Std. Order had the highest cost of order, followed by US-IC Order.
-
-Regarding activities, the Activities by user types table shows the various activities and broken down into Human/Robot. The activity <b>Schedule Line Rejected</b> has no user type. This is because when an order is rejected, the User_Type column is empty. While the net value of the 21,159 orders are 241.83m, they contain 2,488 rejected orders amounting to $62.57m with more rejects coming from TLC Optical Cables and no reject in TLC Connectivity.
+- This page gives an overview of the dataset. It shows the number of orders, activities, events, number of users and number of process variants. The clustered column chart at the top right shows the number of orders per month and year. We can see that there were no much orders in 2007 and 2008, but these orders picked up from January 2019 until the cut of date for this analysis. The probable reason for this is that the system was fully implemented/launched in January 2009.
+- The event graph shows the events from the most occuring to the least occuring. We can see that <i>Create Invoice</i>, <i>Create Delivery</i>, <i>Goods issue</i> and <i>Create Sales Order</i> were the most occuring events. Something notable from this graph is that the <i>Change Schedule date</i> activity is performed 8.31% even slightly higher than <i>Pro forma invoice</i> activity. This signifies a high level of changes.
+- The pie chart shows the number of orders by Business Area. Majority of the orders were made from Business area 7000, accounting for 65% of the total orders, followed by business area 1000 accounting for 12% of the total order requests. 
+- The variants table shows the variants and the number of cases per variant.
+-  Finally, the net value by currency shows the value and number of orders by Document currency. Most orders are made in EUR.
 
 ## Process discovery based on event log data
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Process%20Discovery.jpg?raw=true)
 
-This page helps in analysing the process. It contains various filters including product hierarchy, order type and customer.
-The gain a proper understanding of the process, the order was broken down into the 4 distinct product hierarchy. In understanding the process, 3 different analysis was carried out; (i) variant analysis, (ii) process flow and (iii) transition matrix.
-* <b>Variant analysis</b>: The variant analysis starts by identifying the trace of activities in sequential order that each order request follows. After this, similar traces were grouped into process variants. This analysis, broken down into the various product hierarchy shows the following:
-  * TLC Optical Cables with 12,250 orders has 726 variants. Variant 1 accounts for 38.51% of the orders and follows the following sequence Line creation -> Header Block Removed -> LgstCheckOnConfDat Removed -> Delivery -> Good Issue.
-  * TLC Optical Fibres with 8,775 orders has 68 variants. Variant 1 accounts for 71% of the orders and follows the following sequence Line creation -> LgstCheckOnConfDat Removed -> Delivery -> Good Issue. (notice that the Header Block Removed activity is not included here)
-  * TLC Optical Ground cables with 49 orders has 15 variants. The top 3 variants account for 55.1% of the orders and are all rejected cases. Variant 4 represents the highest variant with completed cases and follows the following sequence Line creation ->  Header Block Removed -> Address missing block set -> LgstCheckOnConfDat Set -> Sched.Line Block Removed -> Address missing block removed -> LgstCheckOnConfDat Removed -> Delivery -> Good Issue
-  * TLC Connectivity with 85 orders has 17 variants. The first two variants accounts for 72.94% of the cases. The first variant is associated with Customer 1.
+This page helps in analysing the process. It contains various filters including variants, activities, first activity and connections. In understanding the process, 3 different analysis was carried out; (i) variant analysis, (ii) process flow and (iii) transition matrix.
+* <b>Variant analysis</b>: The variant analysis starts by identifying the trace of activities in sequential order that each order request follows. After this, similar traces were grouped into process variants. This analysis shows that there are 3,872 different variants.
+  * 2,719 variants occured once, 422 variants occured only twice and 190 variants occured thrice. The various variants does not mean that there is one correct variant. However, a lot of variants means that there is a need for a more standardized process.
+  * The most occuring variant occurs in 14,979 cases, followed by Variant 2 in 9687 cases, Variant 3 in 8,809 cases.
+  * The first five variants accounts for 41,037 cases which accounts for approximately 62% of all cases.
   
-* <b>Process flow visualisation</b>: The process flow graph shows the process flow from the start to finish for the filtered product hierarchy. The Graphviz library was used to automatically generate a visual process model based on the event log data. The process starts from Line creation and either ends with Goods Issue or if the order is rejected, Schedule Line Rejected. Looking at the process flow, it appears that when a line is created, some blocks are set automatically for some customers. They include Header block, LgstCheckOnConfDat, and Credit block. These blocks are removed by the various users in the system.
+* <b>Process flow visualisation</b>: The process flow graph shows the process flow from the start to finish for the top 3 variants highlighting the medium days between activities. The Graphviz library was used to automatically generate a visual process model based on the event log data. The process starts from either Create Sales Order Item or Create Delivery and ends with Create Invoice. The <i>Create Sales Order Item</i> activity occurs in all order requests.
 
-* <b>Transition matrix</b>: This shows how events transition from one activity to another. The row shows the start activity while the columns shows the preceeding activities. The following were noted:
+* <b>Events transition matrix</b>: The aim of this transition matrix shows how the cases moves from one event to another. The row shows the starting event, while the column shows the preceeding events, while the numbers indicates how many times this was done. For example, Billing Block changed was followed by Billing Block set once.
 
-1. <b>Repeated actvities:</b> There are some activities that are done repeatedly.
-![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash-IBM/blob/main/Images/Repeated%20activities.jpg?raw=true)
+The following were noted:
 
-| No. | Activity | Occurrence | Product hierarchy | No. of customers | No. of orders |
-| :--- | :--- | :---: | :--- | :---: | :---: |
-| 1 | Document released for credit | 11 |TLC Optical Cables | 7 | 11 |
-| 2 | Address mising block removed | 5 | TLC Optical Cables | 1 | 1 |
-| 3 | CTR Block Removed | 58 | TLC Optical Cables | 5 | 14 |
-| 4 | Sched.Line Changed Delivery Date | 476 | TLC Optical Cables | 48 | 379 |
+* Sequence-related issues:
+ - Goods Issue to Credit Check Denied: There are 40 cases where the credit check was denied after the Goods Issue activity. This indicates a lack of control in the system as goods could be issued to customers who are not credit worthy.
+ - Goods Issue to Delivery Block Set: There are 15 cases where the Goods Issue activity was followed by Delivery Block Set activity. This happened a total of 13 times.
+ - Delivery Block Set to Create Delivery: There are 134 cases where despite the Delivery Block Set activity was immediately followed by Create Delivery.
+ - Delivery Block Set to Goods Issue: This occures in 4 cases.
+
+* Repeated activities: There were several repeated activities. They include the following amongst others:
+ - Create delivery
+ - Goods issue
+ - Change scheduled date
+ - Pro forma invoice
+
+Connections: The connection column below shows the connections between events i.e., from the preceeding activity to the next activity. From this, there are 349 possible connections.
+
 
  From the above, these activities are all repeated on the TLC Optical Cables product. Shows that there are potential areas for improvement
  
@@ -109,38 +114,33 @@ The gain a proper understanding of the process, the order was broken down into t
 ### Unwanted activities
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Unwanted%20activities.jpg?raw=true)
 
+Unwanted activities: Looking at the variants above, we can see that there are about 6 major activities in the top 5 variants. They include:
+ - Create Sales Order Item
+ - Create Invoice
+ - Create Delivery
+ - Goods Issue
+ - Pro forma invoice
+ - Create Quotation
+The remaining activities are considered Unwanted activities.
+From the above, there are 22 unwanted activities which occured 64,509 times in 23,177 orders. 35% of cases includes unwanted activities. The unwanted activities by business area shows that unwanted activities occurs more in Business Area 7000. Of the unwanted activities, the top three includes <i>Change Scheduled date</i> occurs the most (47.66%), followed by <i>Remove Reason for Rejection</i> (17.72%) and <i>Credit Check Release</i>. In addition to this, the median duration of cases with these unwanted activities is 9 days, compared to 5 days with cases without these activities. This indicates another area of Value improvement.
 
 
 ### Changes
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Changes.jpg?raw=true)
 
+There are changes which occur in the eventlog. This changes causes delays to the order requests. There are 11 change activities, 35,426 change events and they occur in 14,775 orders. The most frequent change activity is <i>Change Scheduled date</i> which occurs approx. 87%. The medium order without the changes is 5 days compared to 12 days for those cases with change activities. This indicates that these changes cause delays in fulfilling the order requests and these changes should be minimised to ensure a high customer satisfaction rate.
 
-* <b>Rejected order</b>: The product with the highest number of rejected order is TLC Optical Ground Cables with 57% of the orders rejected. The reason for the rejections were not stated for root cause analysis, while TLC Connectivity has no rejected order. One notable thing about the rejected order is that none of the orders were rejected after delivery was made.
-
-* Some events are carried out by robots in the process. Asides Delivery and Good Issue, robot can create line, remove header block and set LgstCheckOnConfDat in TLC Optical Cables hierarchy
-
-* <b>Process benchmarking</b>
+### Process benchmarking
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Process%20Benchmarking.jpg?raw=true)
 
-The process benchmarking page helps to compare different process variants using various filters; Order type, Product hierarchy, Delayed order or not. It also contains some metrics such as the median order fulfilment time, on-time order rate, etc. This shows the comparison between the most occuring variants in TLC Optical Cables and TLC Optical Fibres product. We can see that while the TLC optical median fulfilment time for Variant 1 is 60 days, it is 41 days for TLC Optical Fibres. The reason for this as we can see in the above is that despite the fact that the Header Block Removed activity in TLC Optical Cables product is done in less than a day, more time is spent in the LgstCheckOnConfDat Removed activity compared to TLC Optical Fibres product. 
+The process benchmarking page helps to compare different process variants using various filters; Business Area, Division, Changes. It also contains some metrics such as the median order fulfilment time, and how many orders in the selected variant. 
 
+For example, in the above we can see that while the median order fulfilment time in Variant 2 is 0 days, the median order fulfilment time is 7 days. It can further be stated that cases that starts with <i>Create Delivery</i> activity are completed faster than cases that starts with <i>Create Sales Order Item</i>. A possible explanation can be that for cases that starts with <i>Create Delivery</i> activity, the requested item is available and can be issued immediately, while for the case that starts with <i>Create Sales Order Item</i>, it takes a median of 3 days for the goods to be ready for delivery. Additionally, 2 days delay is introduced between the <i>Pro forma invoice</i> and <i>Create Invoice</i> activity. This may be because of manual approval process inherent between these activities.
 
 ## Timing analysis
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Timing%20analysis.jpg?raw=true)
 
-This analysis was done to analyse the bottlenecks in the process relating to timing. To know how long a process should last, we used the median duration of a case as the performance indicator. In the overall order, the median duration was 40 days. About 49.58% of cases did not meet this time target. When broken down into the various product hierarchy, the median duration were as follows.
-
-| Product hierarchy | Median duration | % of cases greater than median duration | Bottleneck | % of Ontime orders |
-| :--- | :---: | :---: | :--- | :---: |
-| TLC Optical Cables | 55 days | 49.77% | Address missing Block Removed | 95% |
-| TLC Optical Ground Cables | 136 days | 42.86% | Sched.Line Changed Delivery Date | 82% |
-| TLC Optical Fibres | 39 days | 49.87% | Header Block Set | 94% |
-| TLC Connectivity | 81 days | 49.41% | Sched.Line Changed Delivery Date | 100% |
-
-From the median duration above, this indicates that there is room for improvement to ensure faster delivery/goods issue. The bottleneck regarding address missing block can be addressed by making sure that all customers in the database have an updated address. This activity takes an average of 19 days to be rectified, making this duration longer.
-
-For sched.line changed delivery date, this is not clear if the change is coming from the customer or the company. If coming from the company, this means that the company needs to improve its inventory planning to avoid this from happening.
-
+This analysis was done to analyse the bottlenecks in the process relating to timing. To know how long a process should last, we used the median duration of the cases as the performance indicator. In the overall order, the median duration was 5 days. About 49% of cases did not meet this time target. When looking at the median time of the indivudual activities, Invoice cancellation takes a median of 12 days. For the transition between events, the connections that takes more time is between Creqte Quotation and Delivery Blocks. They take above 120 days. Apparently, cases which starts with <i>Create Quotation</i> takes more time than other cases. The median case duration for cases which starts with <i>Create Quotation</i> is 69 days, <i>Create Delivery</i> 1 day and <i>Create Sales Order Item</i> is 7 days. This may be as a result of delay in response from the customer when presented with quotes.
 
 ## Order details
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Order%20details.jpg?raw=true)
@@ -150,17 +150,11 @@ This page shows information relating to a particular case by using the filter at
 ## Open orders
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Open%20orders.jpg?raw=true)
 
-This page shows information relating to incomplete cases. These are cases which starts from Line creation but does not end in Good issue or is not rejected. From the eventlog, there are 8,908 uncompleted orders with total value of $1,150.69m. We can further split this uncompleted orders into two categories; Services and Products. 
-
-* The Service category refers to those orders which relates to service delivery. There are two products here; TLC Services and TLC Other. They are a total of 191 orders. The only activity done is Line creation and they have been open for a while. The total net value is $0.11m. For this products, they will remain open until the service contract is ended.
-* The Product category to the products identified in the process analysis; Optical cables, Optical fibres, Connectivity and Optical ground cables. They contain 8,717 cases. In some of these cases, the only activity done is the Line creation activity and this is done across over 120 customers.
-* The total number of orderd which do not have Line creation as the latest activity is 5,568. LgstCheckOnConfDat Removed is the highest last activity which amounts to 37% of these orders, followed by Delivery (34.63%) and Sched.Line Changed Delivery Date (13%).
-* This page can be used to track open orders to monitor cases which are over their expected days.
+This page shows information relating to incomplete order requests. There are 16,524 open order requests based on the dataset which span across various business areas. From the dashboard above, we can see that the last activity of majority of the open orders is <i>Pro forma invoice</i>. This shows that most of the orders have been executed and awaiting the <i>Create Invoice</i> activity to be completed. This dashboard can be connected to the SAP system and refreshed at intervals to keep track of these open orders at certain points. Due to the introduction of Power Automate in Microsoft PowerBI, a notification can be triggered when a case gets to a particular activity, or a reminder can be sent to the responsible individual if an order has stayed in a particular activity after some days. This will prompt users to complete their tasks.
 
 # Process improvement
 Based on the analysis, areas for improvement were identified such as:
 * <b>Process redesign</b>: From the process discovery, it can be seen that some controls should be put in place. There are cases where blocks were set but Delivery still occured and goods were issued. Additional controls should be put in place to avoid this.
-* <b>Segregation of duties</b>The customer service representatives carry out all the activities. This shows that there is lack of segregation of duties and this should be avoided to mitigate fraud. There are a lot of customer service representatives. One option can be to move some of the customer service representatives who posses the skills to carry out other roles to other departments. For example, despite the fact that customer service reps can do every activity, in TLC connectivity, User20 still does most of the work. Segregating the duties will reduce the burden on User20 to ensure other activities are not taking much time.
 * Real-time dashboard: A real-time dashboard should be made available for those open cases to be monitored. This dashboard should include key metrics to ensure that they are not deviating from the expected process and reminders should be sent to process owners to ensure compliance. This would help in reducing processing times and improved overall process efficiency.
 
 # Limitation
