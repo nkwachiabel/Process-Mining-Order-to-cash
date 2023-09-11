@@ -103,14 +103,6 @@ The following were noted:
 
 Connections: The connection column below shows the connections between events i.e., from the preceeding activity to the next activity. From this, there are 349 possible connections.
 
-
- From the above, these activities are all repeated on the TLC Optical Cables product. Shows that there are potential areas for improvement
- 
- 2. <b>Gods Issue</b> 
-     * Goods were issued despite Address missing block was set 3x. This occured in 3 orders with 3 different customers. Looking at the process, these orders
-     * Goods were issued even when the Document blocked for credit activity was set. This occured in 3 different orders from 1 customer (Customer 206). For these 3 cases, the document was released for credit by User51 (Customer service rep) initially in May, but was later blocked for credit in December of the same year by User33 (Master Scheduler) and the Goods were still issued in December by User66 (Customer service rep). This indicates a lack of control in the system.
- 3.  <b>Delivery:</b> There were 5 cases where Delivery activity was done even immediately after the Address missing block was set. A further look into these cases showed that the Address missing block was removed before the Good Issue activity was done. This can be because the Delivery activity was an automatic activity.
-
 ### Unwanted activities
 ![alt text](https://github.com/nkwachiabel/Process-Mining-Order-to-cash/blob/main/Images/Unwanted%20activities.jpg?raw=true)
 
